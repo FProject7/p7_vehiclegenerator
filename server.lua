@@ -38,7 +38,7 @@ local function parse_vehicles_meta(content)
             brand = content:match(vehicleMakeNamePattern) or "none",
             category = content:match(vehicleMakeNamePattern) or "none"
         }
-        table.insert(vehicles, vehicle)
+        vehicles[#vehicles+1] = vehicle
     end
     return vehicles
 end
@@ -47,7 +47,7 @@ local function find_and_process_vehicles_meta(directory)
     local files = {}
     for entry in io.popen('dir "' .. directory .. '" /b /s /a'):lines() do
         if entry:match("vehicles%.meta$") then
-            table.insert(files, entry)
+            files[#files+1] = entry
         end
     end
 
@@ -57,7 +57,7 @@ local function find_and_process_vehicles_meta(directory)
         if content then
             local vehicles = parse_vehicles_meta(content)
             for _, vehicle in ipairs(vehicles) do
-                table.insert(all_vehicles, vehicle)
+                all_vehicles[#all_vehicles+1] = vehicle
             end
         end
     end
