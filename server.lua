@@ -81,8 +81,8 @@ for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
             output = output .. string.format([[{
             model = '%s',
             name = '%s',
-            brand = %d,
-            price = '%s',
+            brand = '%s',
+            price = %d,
             category = '%s',
             type = 'automobile',
             shop = "none",
