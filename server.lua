@@ -67,6 +67,7 @@ end
 
 local output = ""
 for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
+    if not Config.QbcoreTemplate then
     output = output .. string.format([[ %s = {
     name = '%s',
     brand = '%s',
@@ -75,6 +76,17 @@ for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
     category = '%s',
     hash = '%s'
 },]], vehicle.model, vehicle.name, vehicle.brand, vehicle.model, vehicle.price, vehicle.category, vehicle.hash)
+    else
+    output = output .. string.format([[ %s = {
+    model = '%s',
+    name = '%s',
+    brand = %d,
+    price = '%s',
+    category = '%s',
+    type = 'automobile',
+    shop = "none",
+    },]], vehicle.model, vehicle.name, vehicle.brand, vehicle.price, vehicle.category)
+    end
 end
 
 local mydir = GetResourcePath(GetCurrentResourceName())
