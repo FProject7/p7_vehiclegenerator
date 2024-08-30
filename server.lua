@@ -78,7 +78,7 @@ for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
             hash = '%s'
         },]], vehicle.model, vehicle.name, vehicle.brand, vehicle.model, vehicle.price, vehicle.category, vehicle.hash)
         else
-            output = output .. string.format([[ {
+            output = output .. string.format([[{
             model = '%s',
             name = '%s',
             brand = %d,
@@ -86,7 +86,7 @@ for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
             category = '%s',
             type = 'automobile',
             shop = "none",
-            },]], vehicle.model, vehicle.brand, vehicle.price, vehicle.category)
+            },]], vehicle.model, vehicle.model, vehicle.brand, vehicle.price, vehicle.category)
         end
     else
         print('Found vehicle without data')
