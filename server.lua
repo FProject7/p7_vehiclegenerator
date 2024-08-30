@@ -86,7 +86,7 @@ for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
             category = '%s',
             type = 'automobile',
             shop = "none",
-            },]], vehicle.model, vehicle.model, vehicle.brand, vehicle.price, vehicle.category)
+            },]], vehicle.model, vehicle.brand, vehicle.price, vehicle.category)
         end
     else
         print('Found vehicle without data')
