@@ -1,7 +1,8 @@
 
 
+
 local function get_directory()
-    if Config.UseSingleResource then
+    if Config.UseSingleResource and not Config.SearchWholeServer then
         return GetResourcePath(Config.ResourceName)
     else
         local mydir = GetResourcePath(GetCurrentResourceName())
@@ -9,7 +10,11 @@ local function get_directory()
             mydir = mydir:sub(1, -2)
             mydir = mydir:match("^(.+[/\\])")
         end
-        return mydir .. Config.ResourceName .. "/"
+        if not Config.SearchWholeServer then
+            return mydir .. "/"
+        else 
+            return mydir .. Config.ResourceName .. "/"
+        end
     end
 end
 
@@ -65,47 +70,54 @@ local function find_and_process_vehicles_meta(directory)
     return all_vehicles
 end
 
-local output = ""
-for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
-    if vehicle then
-        if not Config.QbcoreTemplate then
-            output = output .. string.format([[ %s = {
-            name = '%s',
-            brand = '%s',
-            model = '%s',
-            price = %d,
-            category = '%s',
-            hash = '%s'
-        },]], vehicle.model, vehicle.name, vehicle.brand, vehicle.model, vehicle.price, vehicle.category, vehicle.hash)
+function run()
+    local output = ""
+    for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
+        if vehicle then
+            if not Config.QbcoreTemplate then
+                output = output .. string.format([[ %s = {
+                name = '%s',
+                brand = '%s',
+                model = '%s',
+                price = %d,
+                category = '%s',
+                hash = '%s'
+            },]], vehicle.model, vehicle.name, vehicle.brand, vehicle.model, vehicle.price, vehicle.category, vehicle.hash)
+            else
+                output = output .. string.format([[{
+                model = '%s',
+                name = '%s',
+                brand = '%s',
+                price = %d,
+                category = '%s',
+                type = 'automobile',
+                shop = "none",
+                },]], vehicle.model, vehicle.model, vehicle.brand, vehicle.price, vehicle.category)
+            end
         else
-            output = output .. string.format([[{
-            model = '%s',
-            name = '%s',
-            brand = '%s',
-            price = %d,
-            category = '%s',
-            type = 'automobile',
-            shop = "none",
-            },]], vehicle.model, vehicle.model, vehicle.brand, vehicle.price, vehicle.category)
+            print('Found vehicle without data')
         end
-    else
-        print('Found vehicle without data')
     end
-end
 
-local mydir = GetResourcePath(GetCurrentResourceName())
-while mydir ~= "" and mydir:sub(-10) ~= "resources/" do
+    local mydir = GetResourcePath(GetCurrentResourceName())
+    while mydir ~= "" and mydir:sub(-10) ~= "resources/" do
+        mydir = mydir:sub(1, -2)
+        mydir = mydir:match("^(.+[/\\])")
+    end
     mydir = mydir:sub(1, -2)
     mydir = mydir:match("^(.+[/\\])")
-end
-mydir = mydir:sub(1, -2)
-mydir = mydir:match("^(.+[/\\])")
 
-local file = io.open(mydir .. "vehicles.lua", "w")
-if file then
-    file:write(output)
-    file:close()
-    print("Output written to " .. mydir .. "output.lua")
+    local file = io.open(mydir .. "vehicles.lua", "w")
+    if file then
+        file:write(output)
+        file:close()
+        print("Output written to " .. mydir .. "output.lua")
+    else
+        print("Error: Cannot write to file " .. mydir .. "output.lua")
+    end
+end
+if Config.EnableCommand then
+    RegisterCommand(Config.Command, run, false)
 else
-    print("Error: Cannot write to file " .. mydir .. "output.lua")
+    run()
 end
