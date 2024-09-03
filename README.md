@@ -22,7 +22,7 @@ If you are using a folder, and not a resource you do not need to add resources/ 
 By example lets say i have this:
 
 Myfolder > Resources
-  > p7_vehiclegenerator
-  > [vehicles]
-    > [car]
+  - p7_vehiclegenerator
+  - [vehicles]
+    -- [car]
 has to be just [vehicles]/[car]. and not resources/[vehicles]/[car]
