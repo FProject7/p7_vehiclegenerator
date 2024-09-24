@@ -75,7 +75,7 @@ function run()
     for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
         if vehicle then
             if not Config.QbcoreTemplate then
-                output = output .. string.format([[ %s = {
+                output = output .. string.format([[ ['%s'] = {
                 name = '%s',
                 brand = '%s',
                 model = '%s',
