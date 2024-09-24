@@ -82,7 +82,7 @@ function run()
                 price = %d,
                 category = '%s',
                 hash = '%s'
-            },]], vehicle.model, vehicle.name, vehicle.brand, vehicle.model, vehicle.price, vehicle.category, vehicle.hash)
+            },]], vehicle.model, vehicle.name, vehicle.model, vehicle.model, vehicle.price, vehicle.category, vehicle.hash)
             else
                 output = output .. string.format([[{
                 model = '%s',
