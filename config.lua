@@ -6,3 +6,13 @@ Config = {
     EnableCommand = true, -- enables the command instead of the script automatically starting when the server starts.
     Command = "generatevehicles" -- the command
 }
+
+Extras = {
+    GenerateVehicleShopTemplate = false, -- ['car-name'] = "pdm", for qbx_vehicleshop
+    VehicleWhitelist = { -- vehicles you want to allow to be generated.
+        "car-1",
+        "car-2",
+        "car-3",
+    }, -- remove all entries and set VehicleWhitelistIsBlacklist to true, and all of them will generate
+    VehicleWhitelistIsBlacklist = false, -- instead of whitelist it becomes blacklist
+}

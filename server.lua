@@ -72,6 +72,7 @@ end
 
 function run()
     local output = ""
+    local shoptemplate = ""
     for _, vehicle in ipairs(find_and_process_vehicles_meta(get_directory())) do
         if vehicle then
             if not Config.QbcoreTemplate then
@@ -94,6 +95,10 @@ function run()
                 shop = "none",
                 },]], vehicle.model, vehicle.model, vehicle.brand, vehicle.price, vehicle.category)
             end
+            if Extras.GenerateVehicleShopTemplate then
+                shoptemplate = shoptemplate .. string.format([[ ['%s'] = 'pdm',
+                ]], vehicle.model)
+            end
         else
             print('Found vehicle without data')
         end
@@ -107,13 +112,23 @@ function run()
     mydir = mydir:sub(1, -2)
     mydir = mydir:match("^(.+[/\\])")
 
+    -- vehicles.lua
     local file = io.open(mydir .. "vehicles.lua", "w")
     if file then
         file:write(output)
         file:close()
-        print("Output written to " .. mydir .. "output.lua")
+        print("Output written to " .. mydir .. "vehicles.lua")
     else
-        print("Error: Cannot write to file " .. mydir .. "output.lua")
+        print("Error: Cannot write to file " .. mydir .. "vehicles.lua")
+    end
+    -- generated.lua
+    local file = io.open(mydir .. "generated.lua", "w")
+    if file then
+        file:write(shoptemplate)
+        file:close()
+        print("[EXTRA] Vehicle Shop data has been written to " .. mydir .. "generated.lua")
+    else
+        print("[EXTRA] Error: Cannot write to file " .. mydir .. "generated.lua")
     end
 end
 if Config.EnableCommand then
